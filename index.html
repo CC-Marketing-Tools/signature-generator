@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CCO Signature Generator</title>
+
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .container {
+    max-width: 650px;
+    margin: auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  }
+
+  h1 {
+    font-size: 20px;
+  }
+
+  .brand {
+    color: #c8102e;
+    font-weight: bold;
+  }
+
+  label {
+    font-size: 13px;
+    font-weight: bold;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0 15px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+  }
+
+  small {
+    color: #777;
+    display: block;
+    margin-top: -10px;
+    margin-bottom: 10px;
+  }
+
+  button {
+    background: #c8102e;
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background: #a50c24;
+  }
+
+  .preview {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 6px;
+    background: #fafafa;
+  }
+
+  textarea {
+    width: 100%;
+    height: 160px;
+    margin-top: 15px;
+    font-size: 11px;
+  }
+
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+    margin-top: 10px;
+  }
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1><span class="brand">Chinowth & Cohen</span><br>Email Signature Generator</h1>
+
+  <label>Name</label>
+  <input id="name">
+
+  <label>Title</label>
+  <input id="title" placeholder="Broker Associate">
+
+  <label>Cell Phone</label>
+  <input id="cell">
+
+  <label>Office Phone</label>
+  <input id="office" value="918-259-0000">
+
+  <label>Headshot Image URL</label>
+  <input id="photo" placeholder="Paste image link (jpg/png)">
+  <small>Tip: Right-click your photo on the company site and click "Copy Image Address"</small>
+
+  <button onclick="generate()">Generate</button>
+  <button onclick="copyOutlook()">Copy for Outlook</button>
+
+  <div id="preview" class="preview"></div>
+
+  <textarea id="output"></textarea>
+
+  <div class="footer">
+    Generate and click "Copy for Outlook", then paste directly into Outlook signature settings
+  </div>
+
+</div>
+
+<script>
+// Format phone numbers
+function formatPhone(number) {
+  let digits = number.replace(/\D/g, '');
+  if (digits.length === 10) {
+    return digits.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+  }
+  return number;
+}
+
+function generate() {
+  let name = document.getElementById("name").value;
+  let title = document.getElementById("title").value;
+  let cell = formatPhone(document.getElementById("cell").value);
+  let office = formatPhone(document.getElementById("office").value);
+  let photo = document.getElementById("photo").value;
+
+  let cellLink = cell.replace(/\D/g, '');
+  let officeLink = office.replace(/\D/g, '');
+
+  let photoHTML = photo ? `
+    <td style="vertical-align: middle; padding-right: 10px;">
+      ${photo}
+    </td>
+  ` : "";
+
+  let html = `
+<table style="font-family: Arial, sans-serif; font-size: 12px; color: #222;">
+  <tr>
+
+    ${photoHTML}
+
+    <td style="vertical-align: middle; padding-right: 12px;">
+      https://www.ccoklahoma.com/images/logos/vert.png
+    </td>
+
+    <td style="vertical-align: middle; border-left: 2px solid #c8102e; padding-left: 12px;">
+      <strong style="font-size: 16px;">${name}</strong><br>
+      <span style="color:#666;">${title}</span><br><br>
+
+      <strong>Chinowth &amp; Cohen | Realtors</strong><br>
+      2625 S. Elm Place<br>
+      Broken Arrow, OK 74012<br><br>
+
+      <strong>Cell:</strong>
+      tel:${cellLink}${cell}</a><br>
+
+      <strong>Office:</strong>
+      <a href="tel:${officeLink}" style="color:#000/tr>
+</table>
+`;
+
+  document.getElementById("preview").innerHTML = html;
+  document.getElementById("output").value = html;
+}
+
+// Copy rendered version (best for Outlook)
+function copyOutlook() {
+  let preview = document.getElementById("preview");
+
+  let range = document.createRange();
+  range.selectNode(preview);
+  window.getSelection().removeAllRanges();
+  window.getSelection().addRange(range);
+
+  document.execCommand("copy");
+  window.getSelection().removeAllRanges();
+
+  alert("Signature copied! Paste directly into Outlook.");
+}
+</script>
+
+</body>
+</html>
