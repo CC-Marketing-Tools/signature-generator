@@ -143,36 +143,41 @@ function generate() {
   let cellLink = cell.replace(/\D/g, '');
   let officeLink = office.replace(/\D/g, '');
 
-  let photoHTML = photo ? `
-    <td style="vertical-align: middle; padding-right: 10px;">
-      ${photo}
-    </td>
-  ` : "";
 
-  let html = `
+let photoHTML = photo ? `
+  <td style="vertical-align: middle; padding-right: 10px;">
+    <img src="${photo}" style="width:80px; height:80px; object-fit:cover; border-radius:6px;">
+  </td>
+` : "";
+
+let html = `
 <table style="font-family: Arial, sans-serif; font-size: 12px; color: #222;">
-  <tr>
+  <tr>
 
-    ${photoHTML}
+    ${photoHTML}
 
-    <td style="vertical-align: middle; padding-right: 12px;">
-      https://www.ccoklahoma.com/images/logos/vert.png
-    </td>
+    <td style="vertical-align: middle; padding-right: 12px;">
+      <img src="https://www.ccoklahoma.com/images/logos/vert.png" style="width:110px;">
+    </td>
 
-    <td style="vertical-align: middle; border-left: 2px solid #c8102e; padding-left: 12px;">
-      <strong style="font-size: 16px;">${name}</strong><br>
-      <span style="color:#666;">${title}</span><br><br>
+    <td style="vertical-align: middle; border-left: 2px solid #c8102e; padding-left: 12px;">
+      <strong style="font-size: 16px;">${name}</strong><br>
+      <span style="color:#666;">${title}</span><br><br>
 
-      <strong>Chinowth &amp; Cohen | Realtors</strong><br>
-      2625 S. Elm Place<br>
-      Broken Arrow, OK 74012<br><br>
+      <strong>Chinowth &amp; Cohen | Realtors</strong><br>
+      2625 S. Elm Place<br>
+      Broken Arrow, OK 74012<br><br>
 
-      <strong>Cell:</strong>
-      tel:${cellLink}${cell}</a><br>
+      <strong>Cell:</strong> 
+      <a href="tel:${cellLink}" style="color:#000;text-decoration:none;">${cell}</a><br>
 
-      <strong>Office:</strong>
-      <a href="tel:${officeLink}" style="color:#000/tr>
+      <strong>Office:</strong> 
+      <a href="tel:${officeLink}" style="color:#000;text-decoration:none;">${office}</a>
+    </td>
+
+  </tr>
 </table>
+`;
 `;
 
   document.getElementById("preview").innerHTML = html;
